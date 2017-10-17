@@ -1,4 +1,4 @@
-C {
+function startApp() {
     showView('viewHome');
 
     // Bind the navigation menu links
@@ -26,4 +26,5 @@ C {
         showView('viewRegister');
     }
 }
+
 
