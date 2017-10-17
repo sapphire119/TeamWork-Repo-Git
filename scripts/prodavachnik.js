@@ -2,6 +2,7 @@ function startApp() {
     showHideMenuLinks();
     showHomeView();
 
+
     // Bind the navigation menu links
     $("#linkHome").click(showHomeView);
     $("#linkLogin").click(showLoginView);
@@ -11,7 +12,6 @@ function startApp() {
     // Bind the form submit buttons
     $("#buttonLoginUser").click(loginUser);
     $("#buttonRegisterUser").click(registerUser);
-
 
     function showView(viewName) {
         // Hide all views and show the selected view only
