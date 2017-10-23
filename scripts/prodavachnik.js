@@ -275,9 +275,11 @@ function startApp() {
         function afterPublisherRequest(publisher) {
             let advertData = {
                 title: $('#formCreateAd input[name=title]').val(),
+				description: $('#formCreateAd textarea[name=description]').val(),
                 publisher: publisher.username,
                 datePublished: $('#formCreateAd input[name=datePublished]').val(),
-                price: Number($('#formCreateAd input[name=price]').val())
+                price: Number($('#formCreateAd input[name=price]').val()),
+				image: $('#formCreateAd input[name=image]').val()
             };
 
             const kinveyAdvertsUrl = kinveyBaseUrl + "appdata/" + kinveyAppKey + "/adverts";
@@ -339,42 +341,14 @@ function startApp() {
             $('#formEditAd input[name=id]').val(advert._id);
             $('#formEditAd input[name=title]').val(advert.title);
             $('#formEditAd input[name=publisher]').val(advert.publisher);
+			$('#formEditAd textarea[name=description]').val(advert.description);
             $('#formEditAd input[name=datePublished]').val(advert.datePublished);
             $('#formEditAd input[name=price]').val(advert.price);
+			$('#formEditAd input[name=image]').val(advert.image);
             showView('viewEditAd');
         }
     }
 
-    // advertisement/edit POST
-    function editAdvert() {
-        const kinveyAdvertUrl =  kinveyBaseUrl + "appdata/" + kinveyAppKey +
-            "/adverts/" + $('#formEditAd input[name=id]').val();
-        const kinveyAuthHeaders = {
-            'Authorization': "Kinvey " + sessionStorage.getItem('authToken'),
-        };
-
-        let advertData = {
-            title: $('#formEditAd input[name=title]').val(),
-            publisher: $('#formEditAd input[name=publisher]').val(),
-            datePublished: $('#formEditAd input[name=datePublished]').val(),
-            price: $('#formEditAd input[name=price]').val()
-        };
-
-        $.ajax({
-            method: "PUT",
-            url: kinveyAdvertUrl,
-            headers: kinveyAuthHeaders,
-            data: advertData,
-            success: editAdvertSuccess,
-            error: handleAjaxError
-
-        });
-
-        function editAdvertSuccess(response) {
-            listAdverts();
-            showInfo('Advertisement created.');
-        }
-    }
 	function displayAdvert(advertId){
         const kinveyAdvertUrl = kinveyBaseUrl + "appdata/" +
             kinveyAppKey + "/adverts/" + advertId;
@@ -387,6 +361,7 @@ function startApp() {
             url: kinveyAdvertUrl,
             headers: kinveyAuthHeaders,
             success: displayAdvertSuccess
+			error: handleAjaxError
         });
 
         $('#viewDetailsAd').empty();
@@ -407,6 +382,39 @@ function startApp() {
             $('#viewDetailsAd').append(advertInfo);
 
             showView('viewDetailsAd');
+        }
+    }
+	
+	    // advertisement/edit POST
+    function editAdvert() {
+        const kinveyAdvertUrl =  kinveyBaseUrl + "appdata/" + kinveyAppKey +
+            "/adverts/" + $('#formEditAd input[name=id]').val();
+        const kinveyAuthHeaders = {
+            'Authorization': "Kinvey " + sessionStorage.getItem('authToken'),
+        };
+
+        let advertData = {
+            title: $('#formEditAd input[name=title]').val(),
+			description: $('#formEditAd textarea[name=description]').val(),
+            publisher: $('#formEditAd input[name=publisher]').val(),
+            datePublished: $('#formEditAd input[name=datePublished]').val(),
+            price: $('#formEditAd input[name=price]').val(),
+			image: $('#formEditAd input[name=image]').val()
+        };
+
+        $.ajax({
+            method: "PUT",
+            url: kinveyAdvertUrl,
+            headers: kinveyAuthHeaders,
+            data: advertData,
+            success: editAdvertSuccess,
+            error: handleAjaxError
+
+        });
+
+        function editAdvertSuccess(response) {
+            listAdverts();
+            showInfo('Advertisement created.');
         }
     }
 
